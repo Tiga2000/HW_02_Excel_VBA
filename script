@@ -1,0 +1,37 @@
+Sub stock()
+
+Dim ws As Worksheet
+
+'go through each worksheet
+For Each ws In ThisWorkbook.Worksheets
+    ws.Cells(1, 9).Value = "Ticker"
+    ws.Cells(1, 10).Value = "Total Stock Volume"
+
+'set variables
+Dim ticker As String
+Dim vol As Double
+    vol = 0
+Dim lastrow As Long
+    lastrow = ws.Cells(Rows.Count, 1).End(xlUp).Row
+Dim table As Integer
+    table = 2
+
+For i = 2 To lastrow
+    'if next value does not match current value then ticker will retain current value
+    If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
+    ticker = ws.Cells(i, 1).Value
+    'add stock volume
+    vol = vol + ws.Cells(i, 7).Value
+    ws.Cells(9 & table).Value = ticker
+    ws.Cells(10 & table).Value = vol
+    table = table + 1
+    'need to reset stock volume
+    vol = 0
+    Else
+    vol = vol + ws.Cells(i, 7).Value
+End If
+
+Next i
+Next ws
+
+End Sub
